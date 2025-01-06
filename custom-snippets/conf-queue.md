@@ -54,8 +54,8 @@ router_ifname_2 = router_iface_2.get_device_name()
 
 router_tc_cmd = '''
 
-	# configure next hop for "top" path
-	sudo ip route add 10.10.3.0/24 via 10.10.1.2 dev {iface1}
+	# configure next hop for path via net1
+	sudo ip route add 10.10.4.0/24 via 10.10.2.2 dev {iface1}
 
 	sudo tc qdisc del dev {iface1} root  
 	sudo tc qdisc add dev {iface1} root handle 1: htb default 3  
@@ -64,8 +64,8 @@ router_tc_cmd = '''
 	sudo tc qdisc add dev {iface1} parent 3: bfifo limit {b1}mbit 
 
 
-	# configure next hop for "bottom" path
-	sudo ip route add 10.10.3.0/24 via 10.10.2.2 dev {iface2} table 100
+	# configure next hop for path via net2
+	sudo ip route add 10.10.4.0/24 via 10.10.3.2 dev {iface2} table 100
 	sudo ip rule add fwmark 3 table 100 
 
 	sudo tc qdisc del dev {iface2} root  
@@ -96,7 +96,7 @@ if exp['lb_type']=="packet":
 	router_iptables_cmd = '''
 		# flush first!
 		sudo iptables -t mangle -F
-		sudo iptables -A PREROUTING -m statistic --mode nth --every {n_packets} --packet 0 -t mangle --destination 10.10.3.100/24 --source 10.10.0.100/1 -j MARK --set-mark 3
+		sudo iptables -A PREROUTING -m statistic --mode nth --every {n_packets} --packet 0 -t mangle --destination 10.10.4.100/24 --source 10.10.0.100/1 -j MARK --set-mark 3
 		sudo iptables -A PREROUTING -m mark --mark 3 -t mangle -j RETURN
 	'''
 
@@ -147,8 +147,8 @@ aggr_ifname_2 = aggr_iface_2.get_device_name()
 
 aggr_tc_cmd = '''
 
-	# configure next hop for "top" path
-	sudo ip route add 10.10.0.0/24 via 10.10.1.1 dev {iface1}
+	# configure next hop for path via net1
+	sudo ip route add 10.10.0.0/24 via 10.10.2.1 dev {iface1}
 
 	sudo tc qdisc del dev {iface1} root  
 	sudo tc qdisc add dev {iface1} root handle 1: htb default 3  
@@ -156,8 +156,8 @@ aggr_tc_cmd = '''
 	sudo tc qdisc add dev {iface1} parent 1:3 bfifo limit {b1}mbit 	
 
 
-	# configure next hop for "bottom" path
-	sudo ip route add 10.10.0.0/24 via 10.10.2.1 dev {iface2} table 100
+	# configure next hop for path via net2
+	sudo ip route add 10.10.0.0/24 via 10.10.3.1 dev {iface2} table 100
 	sudo ip rule add fwmark 3 table 100 
 
 	sudo tc qdisc del dev {iface2} root  
