@@ -15,7 +15,7 @@ node_conf = [
 net_conf = [
  {"name": "net0", "subnet": "10.10.0.0/24", "nodes": [{"name": "client",  "addr": "10.10.0.100"}, {"name": "router",  "addr": "10.10.0.1"}]},
  {"name": "net1", "subnet": "10.10.1.0/23", "nodes": [{"name": "router",  "addr": "10.10.1.1"},   {"name": "aggr",    "addr": "10.10.1.2"}]},
- {"name": "net2", "subnet": "10.10.2.0/23", "nodes": [{"name": "router",  "addr": "10.10.2.1"},   {"name": "aggr",    "addr": "10.10.2.2"}]},
+ {"name": "net2", "subnet": "10.10.1.0/23", "nodes": [{"name": "router",  "addr": "10.10.2.1"},   {"name": "aggr",    "addr": "10.10.2.2"}]},
  {"name": "net3", "subnet": "10.10.3.0/24", "nodes": [{"name": "server",  "addr": "10.10.3.100"},  {"name": "aggr",   "addr": "10.10.3.1"}]}
 ]
 
